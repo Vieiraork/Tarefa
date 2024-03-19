@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+Editação de Tarefa
+{% endblock title %}
+
+{% block content %}
+<section class="conntent">
+    <div class="container">
+        <form action="{% url 'update' tarefa.id %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="no_tarefa" class="form-label">Nome</label>
+                <input type="text" name="no_tarefa" id="no_tarefa" class="form-control" value="{{ tarefa.no_tarefa }}">
+            </div>
+            <div class="mb-1">
+                <label for="st_status">Status</label>
+                <select name="st_status" id="st_status" class="form-control">
+                    {% if tarefa.st_status == 'N' %}
+                    <option value="N" selected>Não Iniciada</option>
+                    <option value="I">Iniciada</option>
+                    <option value="C">Concluída</option>
+                    {% elif tarefa.st_status == 'I' %}
+                    <option value="N">Não Iniciada</option>
+                    <option value="I" selected>Iniciada</option>
+                    <option value="C">Concluída</option>
+                    {% else %}
+                    <option value="N">Não Iniciada</option>
+                    <option value="I">Iniciada</option>
+                    <option value="C" selected>Concluída</option>
+                    {% endif %}
+                </select>
+            </div>
+            <br>
+            <div class="row float-end">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-outline btn-success">
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock content %}

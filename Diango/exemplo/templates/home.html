@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+{% block scripts %}
+<script type="text/javascript">
+    (function() {
+        function init() {
+            transformDataTable();
+        }
+
+        function transformDataTable() {
+            $('#tbExemplo').DataTable({
+                language: {
+                    lengthMenu: "Mostrando _MENU_ registros por página",
+                    zeroRecords: "Nenhum registro encontrado",
+                    info: "Mostrando página _PAGE_ de _PAGES_",
+                    infoEmpty: "Nenhum registro encontrado",
+                    infoFiltered: "(filtrado de _MAX_ registros no total)",
+                    search: "Pesquisar",
+                    paginate: {
+                        next: "Proximo",
+                        previous: "Anterior",
+                        first: "Primeiro",
+                        last: "Último"
+                    },
+                } 
+            });
+        }
+
+        init();
+    })();
+</script>
+{% endblock scripts %}
+
+{% block content %}
+<section class="content">
+    <div class="conteiner container-fluid">
+        <hr>
+        <table class="table table-hover table-bordered border-dark" id="tbExemplo">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>Status</th>
+                    <th>Data Registro</th>
+                    <th>Data Atualização</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tarefa in tarefas %}
+                <tr>
+                    <td>{{ tarefa.no_tarefa }}</td>
+                    <td>
+                        {% if tarefa.st_status == 'N' %}
+                        <span>Não Iniciada</span>
+                        {% elif tarefa.st_status == 'I' %}
+                        <span>Iniciada</span>
+                        {% else %}
+                        <span>Concluída</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ tarefa.dt_inclusao }}</td>
+                    <td>
+                        {{ tarefa.dt_alteracao|default_if_none:'' }}
+                    </td>
+                    <td>
+                        <a href="{% url 'edit' tarefa.id %}" class="btn btn-outline btn-warning">Editar</a>
+                        <a href="{% url 'destroy' tarefa.id %}" class="btn btn-outline btn-danger">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock content %}
